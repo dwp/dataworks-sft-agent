@@ -1,29 +1,29 @@
 jobs:
-  - name: dataworks-repo-template-docker-pr
+  - name: dataworks-sft-agent-pr
     plan:
-      - get: dataworks-repo-template-docker-pr
+      - get: dataworks-sft-agent-pr
         trigger: true
         version: every
-      - put: dataworks-repo-template-docker-pr
+      - put: dataworks-sft-agent-pr
         params:
-          path: dataworks-repo-template-docker-pr
+          path: dataworks-sft-agent-pr
           status: pending
       - .: (( inject meta.plan.terraform-bootstrap ))
         input_mapping:
-          dataworks-repo-template-docker: dataworks-repo-template-docker-pr
+          dataworks-sft-agent: dataworks-sft-agent-pr
       - .: (( inject meta.plan.terraform-plan ))
         input_mapping:
-          dataworks-repo-template-docker: dataworks-repo-template-docker-pr
+          dataworks-sft-agent: dataworks-sft-agent-pr
         params:
           TF_WORKSPACE: "management"
           DETAILED_EXITCODE: ""
         on_failure:
-          put: dataworks-repo-template-docker-pr
+          put: dataworks-sft-agent-pr
           params:
-            path: dataworks-repo-template-docker-pr
+            path: dataworks-sft-agent-pr
             status: failure
         on_success:
-          put: dataworks-repo-template-docker-pr
+          put: dataworks-sft-agent-pr
           params:
-            path: dataworks-repo-template-docker-pr
+            path: dataworks-sft-agent-pr
             status: success

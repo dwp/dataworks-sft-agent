@@ -1,6 +1,6 @@
-# dataworks-repo-template-docker
+# dataworks-sft-agent
 
-## Description
+## A repo for the dataworks sft agent docker image
 
 This repo contains Makefile, and Dockerfile to fit the standard pattern.
 This repo is a base to create new Docker image repos, adding the githooks submodule, making the repo ready for use.
