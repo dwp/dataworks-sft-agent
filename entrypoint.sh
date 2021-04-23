@@ -47,7 +47,7 @@ fi
 
 echo "INFO: Copying cloudwatch-exporter configuration file(s) from ${S3_URI} to /etc/cloudwatch-exporter..."
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
-aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-config.yml
+aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
 echo "INFO: Starting the SFT agent..."
 exec java -jar sft-agent.jar server agent-config.yml
