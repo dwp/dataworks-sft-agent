@@ -1,14 +1,19 @@
 FROM openjdk:8
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN ./aws/install
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
+    && unzip awscliv2.zip \
+    && rm awscliv2.zip \
+    && ./aws/install \
+    && rm -rf ./aws/
 
-RUN rm -rf ./aws/
-
-COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar /app/sft-agent.jar
-COPY entrypoint.sh /app/
-
+RUN mkdir app
 WORKDIR /app
 
-CMD ["/bin/bash", "entrypoint.sh"]
+COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
+COPY agent-config.yml .
+COPY entrypoint.sh .
+
+RUN chown 0755 entrypoint.sh
+
+EXPOSE 8443
+ENTRYPOINT ["./entrypoint.sh"]

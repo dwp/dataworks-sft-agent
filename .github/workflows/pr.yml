@@ -7,7 +7,7 @@ on:
       - '**/*.md'
 
 env:
-  IMAGE_NAME: dwpdigital/dataworks-sft-agent
+  IMAGE_NAME: dwpdigital/sft-agent
 
 jobs:
   docker-build-and-scan:
