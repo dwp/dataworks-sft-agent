@@ -10,8 +10,7 @@ RUN mkdir app
 WORKDIR /app
 
 COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
-COPY agent-config.yml .
-COPY entrypoint.sh .
+COPY entrypoint.sh agent-config.yml agent-application-config.yml ./
 
 RUN chmod 0755 entrypoint.sh
 

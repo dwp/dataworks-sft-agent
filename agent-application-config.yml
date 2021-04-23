@@ -1,0 +1,13 @@
+sender:
+  routes:
+    - name: test_route
+      source: /test/
+      actions:
+        - name: httpRequest
+          properties:
+            destination: https://127.0.0.1:8080
+      errorFolder: /test/error
+      threadPoolSize: 5
+      maxThreadPoolSize: 5
+      deleteOnSend: true
+      filenameRegex: .*
