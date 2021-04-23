@@ -20,5 +20,3 @@ logging:
 apikey: Te5tAp1Key
 
 <#include "agent-application-config.yml">
-
-
