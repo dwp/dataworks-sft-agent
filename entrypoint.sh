@@ -49,4 +49,4 @@ echo "INFO: Copying cloudwatch-exporter configuration file(s) from ${S3_URI} to 
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/config.yml /etc/cloudwatch-exporter/config.yml
 
 echo "INFO: Starting cloudwatch-exporter..."
-exec java -jar sft-agent.jar server config.yml
+exec java -jar sft-agent.jar server agent-config.yml

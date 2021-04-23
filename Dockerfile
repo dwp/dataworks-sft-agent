@@ -13,7 +13,7 @@ COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d66
 COPY agent-config.yml .
 COPY entrypoint.sh .
 
-RUN chown 0755 entrypoint.sh
+RUN chmod 0755 entrypoint.sh
 
-EXPOSE 8443
+EXPOSE 8080
 ENTRYPOINT ["./entrypoint.sh"]
