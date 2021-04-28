@@ -45,7 +45,7 @@ else
   echo "INFO: Using attached IAM roles/instance profiles to authenticate with S3 as no AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY have been provided"
 fi
 
-echo "INFO: Copying cloudwatch-exporter configuration file(s) from ${S3_URI} to /etc/cloudwatch-exporter..."
+echo "INFO: Copying SFT-agent configuration file(s) from ${S3_URI} to /app/..."
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
