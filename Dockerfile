@@ -16,4 +16,11 @@ RUN chmod g+rwX /app
 RUN chmod 0755 entrypoint.sh
 
 EXPOSE 8080
+
+# Data volume
+VOLUME [ "/data-egress" ]
+
+# Working from data dir
+WORKDIR /data-egress
+
 ENTRYPOINT ["./entrypoint.sh"]
