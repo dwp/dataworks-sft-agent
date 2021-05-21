@@ -7,13 +7,20 @@ RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2
     && rm -rf ./aws/
 
 RUN mkdir app
+RUN mkdir data-egress
+
 WORKDIR /app
+
+# Data volume
+VOLUME [ "/data-egress" ]
 
 COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
 COPY entrypoint.sh agent-config.yml agent-application-config.yml ./
 
 RUN chmod g+rwX /app
+RUN chmod g+rwX /data-egress
 RUN chmod 0755 entrypoint.sh
 
 EXPOSE 8080
+
 ENTRYPOINT ["./entrypoint.sh"]
