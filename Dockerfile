@@ -15,7 +15,7 @@ WORKDIR /app
 VOLUME [ "/data-egress" ]
 
 COPY sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
-COPY entrypoint.sh agent-config.yml agent-application-config.yml ./
+COPY entrypoint.sh ./
 
 RUN chmod g+rwX /app
 RUN chmod g+rwX /data-egress
