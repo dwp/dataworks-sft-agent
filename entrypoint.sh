@@ -67,6 +67,7 @@ then
   for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
   (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
   done
+fi
 
 echo "INFO: Starting the SFT agent..."
 exec java -jar sft-agent.jar server agent-config.yml
