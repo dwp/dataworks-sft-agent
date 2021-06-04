@@ -50,8 +50,7 @@ aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
 echo "SFT_USE_SSL value is ${SFT_USE_SSL}"
-if [[ "${SFT_USE_SSL}" == "true" ]]
-then
+if [ "${SFT_USE_SSL}" = "true" ]; then
   export ACM_KEY_PASSWORD=$(uuidgen -r)
   echo "Retrieving acm certs"
   acm-cert-retriever \
