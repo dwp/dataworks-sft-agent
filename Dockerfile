@@ -10,16 +10,11 @@ RUN echo "===> Installing Dependencies ..." \
     && apk add --no-cache util-linux \
     && apk add --no-cache curl \
     && apk add --no-cache openjdk8-jre \
+    && apk add --no-cache aws-cli \
     && echo "===> Installing acm_pca_cert_generator ..." \
     && apk add --no-cache g++ gcc musl-dev libffi-dev openssl-dev gcc cargo  \
     && pip3 install https://github.com/dwp/acm-pca-cert-generator/releases/download/${acm_cert_helper_version}/acm_cert_helper-${acm_cert_helper_version}.tar.gz \
     && echo "==Dependencies done=="
-
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" \
-    && unzip awscliv2.zip \
-    && rm awscliv2.zip \
-    && ./aws/install \
-    && rm -rf ./aws/
 
 RUN mkdir app
 RUN mkdir data-egress
