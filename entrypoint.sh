@@ -54,25 +54,26 @@ echo "INFO: Copying SFT-agent configuration file(s) from ${S3_URI} to /app/..."
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
-echo "SFT_USE_SSL value is ${SFT_USE_SSL}"
-if [ "${SFT_USE_SSL}" = "true" ]; then
-  export ACM_KEY_PASSWORD=$(uuidgen -r)
-  echo "Retrieving acm certs"
-  acm-cert-retriever \
-  --acm-cert-arn "${acm_cert_arn}" \
-  --acm-key-passphrase "$ACM_KEY_PASSWORD" \
-  --private-key-alias "${private_key_alias}" \
-  --truststore-aliases "${truststore_aliases}" \
-  --truststore-certs "${truststore_certs}"
+pwd=$(pwd)
 
-  cd /usr/local/share/ca-certificates/
-  touch data_egress_sft_ca.pem
+export ACM_KEY_PASSWORD=$(uuidgen -r)
+echo "Retrieving acm certs"
+acm-cert-retriever \
+--acm-cert-arn "${acm_cert_arn}" \
+--acm-key-passphrase "$ACM_KEY_PASSWORD" \
+--private-key-alias "${private_key_alias}" \
+--truststore-aliases "${truststore_aliases}" \
+--truststore-certs "${truststore_certs}"
 
-  TRUSTSTORE_ALIASES="${truststore_aliases}"
-  for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
-  (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
-  done
-fi
+cd /usr/local/share/ca-certificates/
+touch data_egress_sft_ca.pem
+
+TRUSTSTORE_ALIASES="${truststore_aliases}"
+for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
+(cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
+done
+cd $pwd
+
 
 echo "INFO: Starting the SFT agent..."
 exec java -jar sft-agent.jar server agent-config.yml
