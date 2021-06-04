@@ -54,6 +54,8 @@ echo "INFO: Copying SFT-agent configuration file(s) from ${S3_URI} to /app/..."
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
+pwd=$(pwd)
+
 export ACM_KEY_PASSWORD=$(uuidgen -r)
 echo "Retrieving acm certs"
 acm-cert-retriever \
@@ -70,7 +72,7 @@ TRUSTSTORE_ALIASES="${truststore_aliases}"
 for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
-cd ../../../../
+cd $pwd
 
 
 echo "INFO: Starting the SFT agent..."
