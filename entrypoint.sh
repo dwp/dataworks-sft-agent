@@ -1,5 +1,10 @@
 #!/bin/sh
 set -e
+
+export HTTP_PROXY="http://${internet_proxy}:3128"
+export HTTPS_PROXY="$HTTP_PROXY"
+export NO_PROXY="${non_proxied_endpoints},${dks_fqdn}"
+
 echo "INFO: Checking container configuration..."
 if [ -z "${SFT_AGENT_CONFIG_S3_BUCKET}" -o -z "${SFT_AGENT_CONFIG_S3_PREFIX}" ]; then
   echo "ERROR: SFT_AGENT_CONFIG_S3_BUCKET and SFT_AGENT_CONFIG_S3_PREFIX environment variables must be provided"
