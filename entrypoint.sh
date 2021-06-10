@@ -91,5 +91,6 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
 fi
 
 cd $pwd
+
 echo "INFO: Starting the SFT agent..."
-exec java -jar sft-agent.jar server agent-config.yml
+exec java -Djavax.net.debug="${JAVAX_DEBUG}" -jar sft-agent.jar server agent-config.yml
