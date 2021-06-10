@@ -84,6 +84,9 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
       mkdir "${TEST_DIRECTORY}"
       cd "${TEST_DIRECTORY}"
   fi
+  echo "test 1" >> test1.txt
+  echo "test 2" >> test2.txt
+fi
 
 cd $pwd
 echo "INFO: Starting the SFT agent..."
