@@ -92,4 +92,4 @@ fi
 
 cd $pwd
 echo "INFO: Starting the SFT agent..."
-exec java -jar sft-agent.jar server agent-config.yml
+exec java -Djavax.net.debug=all -jar sft-agent.jar server agent-config.yml
