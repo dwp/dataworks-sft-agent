@@ -73,8 +73,17 @@ for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
 
-if [ -n "${CREATE_TEST_FILES}" ]; then
-  cd /data-data_egress
+
+if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
+  echo "INFO: Creating test files in ${TEST_DIRECTORY}"
+  cd /data-egress # mounted volume
+  if [ -d ${TEST_DIRECTORY}" ] 
+  then
+      cd "${TEST_DIRECTORY}"
+  else
+      mkdir "${TEST_DIRECTORY}"
+      cd "${TEST_DIRECTORY}"
+  fi
   echo "test 1" >> test1.txt
   echo "test 2" >> test2.txt
 fi
