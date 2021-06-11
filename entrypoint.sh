@@ -84,6 +84,10 @@ for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
 
+unset HTTP_PROXY
+unset HTTPS_PROXY
+unset NO_PROXY
+
 echo "INFO: CREATE_TEST_FILES is set to ${CREATE_TEST_FILES}"
 echo "INFO: TEST_DIRECTORY is set to ${TEST_DIRECTORY}"
 
