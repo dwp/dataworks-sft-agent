@@ -84,6 +84,10 @@ for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
 
+unset HTTP_PROXY
+unset HTTPS_PROXY
+unset NO_PROXY
+
 echo "INFO: CREATE_TEST_FILES is set to ${CREATE_TEST_FILES}"
 echo "INFO: TEST_DIRECTORY is set to ${TEST_DIRECTORY}"
 
@@ -104,4 +108,9 @@ fi
 cd $pwd
 
 echo "INFO: Starting the SFT agent..."
-exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -jar sft-agent.jar server agent-config.yml
+if [ -n "${CONFIGURE_SSL}" ]; then
+  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -jar sft-agent.jar server agent-config.yml
+else
+  exec java -jar sft-agent.jar server agent-config.yml
+fi
+
