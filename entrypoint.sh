@@ -109,8 +109,9 @@ cd $pwd
 
 echo "INFO: Starting the SFT agent..."
 if [ -n "${CONFIGURE_SSL}" ]; then
-  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -jar sft-agent.jar server agent-config.yml
+  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
 else
   exec java -jar sft-agent.jar server agent-config.yml
 fi
 
+javax.net.ssl.keyAlias
