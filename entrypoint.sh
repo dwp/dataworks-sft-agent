@@ -56,12 +56,22 @@ aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-applica
 
 pwd=$(pwd)
 
-export ACM_KEY_PASSWORD=$(uuidgen -r)
+# Retrieve certificates
+TRUSTSTORE_PASSWORD=$(uuidgen -r)
+KEYSTORE_PASSWORD=$(uuidgen -r)
+PRIVATE_KEY_PASSWORD=$(uuidgen -r)
+ACM_KEY_PASSWORD=$(uuidgen -r)
+
 echo "Retrieving acm certs"
-acm-cert-retriever \
 --acm-cert-arn "${acm_cert_arn}" \
 --acm-key-passphrase "$ACM_KEY_PASSWORD" \
+--add-downloaded-chain-to-keystore true \
+--keystore-path "/opt/data-egress/keystore.jks" \
+--keystore-password "$KEYSTORE_PASSWORD" \
 --private-key-alias "${private_key_alias}" \
+--private-key-password "$PRIVATE_KEY_PASSWORD" \
+--truststore-path "/opt/data-egress/truststore.jks" \
+--truststore-password "$TRUSTSTORE_PASSWORD" \
 --truststore-aliases "${truststore_aliases}" \
 --truststore-certs "${truststore_certs}"
 
@@ -93,4 +103,4 @@ fi
 cd $pwd
 
 echo "INFO: Starting the SFT agent..."
-exec java -Djavax.net.debug="${JAVAX_DEBUG}" -jar sft-agent.jar server agent-config.yml
+exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -jar sft-agent.jar server agent-config.yml
