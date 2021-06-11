@@ -63,6 +63,7 @@ PRIVATE_KEY_PASSWORD=$(uuidgen -r)
 ACM_KEY_PASSWORD=$(uuidgen -r)
 
 echo "Retrieving acm certs"
+acm-cert-retriever \
 --acm-cert-arn "${acm_cert_arn}" \
 --acm-key-passphrase "$ACM_KEY_PASSWORD" \
 --add-downloaded-chain-to-keystore true \
