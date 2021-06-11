@@ -113,5 +113,3 @@ if [ -n "${CONFIGURE_SSL}" ]; then
 else
   exec java -jar sft-agent.jar server agent-config.yml
 fi
-
-javax.net.ssl.keyAlias
