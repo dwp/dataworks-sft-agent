@@ -62,16 +62,19 @@ KEYSTORE_PASSWORD=$(uuidgen -r)
 PRIVATE_KEY_PASSWORD=$(uuidgen -r)
 ACM_KEY_PASSWORD=$(uuidgen -r)
 
+KEY_STORE_PATH="/opt/data-egress/keystore.jks"
+TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
+
 echo "Retrieving acm certs"
 acm-cert-retriever \
 --acm-cert-arn "${acm_cert_arn}" \
 --acm-key-passphrase "$ACM_KEY_PASSWORD" \
 --add-downloaded-chain-to-keystore true \
---keystore-path "/opt/data-egress/keystore.jks" \
+--keystore-path "$KEY_STORE_PATH" \
 --keystore-password "$KEYSTORE_PASSWORD" \
 --private-key-alias "${private_key_alias}" \
 --private-key-password "$PRIVATE_KEY_PASSWORD" \
---truststore-path "/opt/data-egress/truststore.jks" \
+--truststore-path "$TRUST_STORE_PATH" \
 --truststore-password "$TRUSTSTORE_PASSWORD" \
 --truststore-aliases "${truststore_aliases}" \
 --truststore-certs "${truststore_certs}"
@@ -83,6 +86,12 @@ TRUSTSTORE_ALIASES="${truststore_aliases}"
 for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
+
+# Add SSl config to SFT
+sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
+sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
+sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
+sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
 
 unset HTTP_PROXY
 unset HTTPS_PROXY
@@ -109,7 +118,7 @@ cd $pwd
 
 echo "INFO: Starting the SFT agent..."
 if [ -n "${CONFIGURE_SSL}" ]; then
-  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="/opt/data-egress/keystore.jks" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="/opt/data-egress/truststore.jks" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
+  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
 else
   exec java -jar sft-agent.jar server agent-config.yml
 fi
