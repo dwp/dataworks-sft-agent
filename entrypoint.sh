@@ -87,12 +87,6 @@ for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
 
-# Add SSl config to SFT
-sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
-sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
-sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
-sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
-
 unset HTTP_PROXY
 unset HTTPS_PROXY
 unset NO_PROXY
@@ -115,6 +109,11 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
 fi
 
 cd $pwd
+# Add SSl config to SFT
+sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
+sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
+sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
+sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
 
 echo "INFO: Starting the SFT agent..."
 if [ -n "${CONFIGURE_SSL}" ]; then
