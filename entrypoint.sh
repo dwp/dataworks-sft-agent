@@ -54,7 +54,7 @@ echo "INFO: Copying SFT-agent configuration file(s) from ${S3_URI} to /app/..."
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-config.yml agent-config.yml
 aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-application-config.yml
 
-pwd=$(pwd)
+app_dir=$(pwd)
 
 # Retrieve certificates
 TRUSTSTORE_PASSWORD=$(uuidgen -r)
@@ -87,12 +87,6 @@ for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
 done
 
-# Add SSl config to SFT
-sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
-sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
-sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
-sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
-
 unset HTTP_PROXY
 unset HTTPS_PROXY
 unset NO_PROXY
@@ -114,7 +108,12 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
   echo "test 2" >> test2.txt
 fi
 
-cd $pwd
+cd $app_dir
+# Add SSl config to SFT
+sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
+sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
+sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
+sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
 
 echo "INFO: Starting the SFT agent..."
 if [ -n "${CONFIGURE_SSL}" ]; then
