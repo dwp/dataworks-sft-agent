@@ -72,12 +72,9 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
   echo "test 2" >> test2.txt
 fi
 
-
 # Retrieve certificates
 TRUSTSTORE_PASSWORD=$(uuidgen -r)
 KEYSTORE_PASSWORD=$(uuidgen -r)
-PRIVATE_KEY_PASSWORD=$(uuidgen -r)
-ACM_KEY_PASSWORD=$(uuidgen -r)
 
 KEY_STORE_PATH="/opt/data-egress/keystore.jks"
 TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
@@ -85,12 +82,12 @@ TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
 echo "Retrieving acm certs"
 acm-cert-retriever \
 --acm-cert-arn "${acm_cert_arn}" \
---acm-key-passphrase "$ACM_KEY_PASSWORD" \
+--acm-key-passphrase "$KEYSTORE_PASSWORD" \
 --add-downloaded-chain-to-keystore true \
 --keystore-path "$KEY_STORE_PATH" \
 --keystore-password "$KEYSTORE_PASSWORD" \
 --private-key-alias "${private_key_alias}" \
---private-key-password "$PRIVATE_KEY_PASSWORD" \
+--private-key-password "$KEYSTORE_PASSWORD" \
 --truststore-path "$TRUST_STORE_PATH" \
 --truststore-password "$TRUSTSTORE_PASSWORD" \
 --truststore-aliases "${truststore_aliases}" \
