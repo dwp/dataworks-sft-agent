@@ -72,11 +72,9 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
   echo "test 2" >> test2.txt
 fi
 
-
 # Retrieve certificates
 TRUSTSTORE_PASSWORD=$(uuidgen -r)
 KEYSTORE_PASSWORD=$(uuidgen -r)
-PRIVATE_KEY_PASSWORD=$(uuidgen -r)
 
 KEY_STORE_PATH="/opt/data-egress/keystore.jks"
 TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
