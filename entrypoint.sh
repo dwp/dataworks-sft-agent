@@ -72,39 +72,44 @@ if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
   echo "test 2" >> test2.txt
 fi
 
+
+# Retrieve certificates
+TRUSTSTORE_PASSWORD=$(uuidgen -r)
+KEYSTORE_PASSWORD=$(uuidgen -r)
+PRIVATE_KEY_PASSWORD=$(uuidgen -r)
+ACM_KEY_PASSWORD=$(uuidgen -r)
+
+KEY_STORE_PATH="/opt/data-egress/keystore.jks"
+TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
+
+echo "Retrieving acm certs"
+acm-cert-retriever \
+--acm-cert-arn "${acm_cert_arn}" \
+--acm-key-passphrase "$ACM_KEY_PASSWORD" \
+--add-downloaded-chain-to-keystore true \
+--keystore-path "$KEY_STORE_PATH" \
+--keystore-password "$KEYSTORE_PASSWORD" \
+--private-key-alias "${private_key_alias}" \
+--private-key-password "$PRIVATE_KEY_PASSWORD" \
+--truststore-path "$TRUST_STORE_PATH" \
+--truststore-password "$TRUSTSTORE_PASSWORD" \
+--truststore-aliases "${truststore_aliases}" \
+--truststore-certs "${truststore_certs}"
+
+cd /usr/local/share/ca-certificates/
+touch data_egress_sft_ca.pem
+
+TRUSTSTORE_ALIASES="${truststore_aliases}"
+for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
+(cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
+done
+
+cd $app_dir
+unset HTTP_PROXY
+unset HTTPS_PROXY
+unset NO_PROXY
+
 if [ -n "${CONFIGURE_SSL}" ]; then
-  # Retrieve certificates
-  TRUSTSTORE_PASSWORD=$(uuidgen -r)
-  KEYSTORE_PASSWORD=$(uuidgen -r)
-  PRIVATE_KEY_PASSWORD=$(uuidgen -r)
-  ACM_KEY_PASSWORD=$(uuidgen -r)
-
-  KEY_STORE_PATH="/opt/data-egress/keystore.jks"
-  TRUST_STORE_PATH="/opt/data-egress/truststore.jks"
-
-  echo "Retrieving acm certs"
-  acm-cert-retriever \
-  --acm-cert-arn "${acm_cert_arn}" \
-  --acm-key-passphrase "$ACM_KEY_PASSWORD" \
-  --add-downloaded-chain-to-keystore true \
-  --keystore-path "$KEY_STORE_PATH" \
-  --keystore-password "$KEYSTORE_PASSWORD" \
-  --private-key-alias "${private_key_alias}" \
-  --private-key-password "$PRIVATE_KEY_PASSWORD" \
-  --truststore-path "$TRUST_STORE_PATH" \
-  --truststore-password "$TRUSTSTORE_PASSWORD" \
-  --truststore-aliases "${truststore_aliases}" \
-  --truststore-certs "${truststore_certs}"
-
-  cd /usr/local/share/ca-certificates/
-  touch data_egress_sft_ca.pem
-
-  TRUSTSTORE_ALIASES="${truststore_aliases}"
-  for F in $(echo $TRUSTSTORE_ALIASES | sed "s/,/ /g"); do
-  (cat "$F.crt"; echo) >> data_egress_sft_ca.pem;
-  done
-
-  cd $app_dir
   # Add SSl config to SFT
   
   sed -i "s/^\(\s*keyStorePassword\s*:\s*\).*/\1$KEYSTORE_PASSWORD/" agent-config.yml
@@ -113,18 +118,9 @@ if [ -n "${CONFIGURE_SSL}" ]; then
   sed -i "s/^\(\s*trustStorePassword\s*:\s*\).*/\1$TRUSTSTORE_PASSWORD/" agent-config.yml
 
   cat agent-config.yml
-
-  unset HTTP_PROXY
-  unset HTTPS_PROXY
-  unset NO_PROXY
-
   echo "INFO: Starting the SFT agent with SSL config..."
   exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
 else
-  unset HTTP_PROXY
-  unset HTTPS_PROXY
-  unset NO_PROXY
-  cd $app_dir
   echo "INFO: Starting the SFT agent..."
   exec java -jar sft-agent.jar server agent-config.yml
 fi
