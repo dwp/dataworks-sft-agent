@@ -18,6 +18,7 @@ RUN echo "===> Installing Dependencies ..." \
 
 RUN mkdir app
 RUN mkdir data-egress
+RUN mkdir -p /opt/data-egress
 
 WORKDIR /app
 
@@ -35,6 +36,7 @@ RUN chown -R $USER_NAME.$GROUP_NAME /etc/ssl/
 RUN chown -R $USER_NAME.$GROUP_NAME /usr/local/share/ca-certificates/
 RUN chown -R $USER_NAME.$GROUP_NAME /app
 RUN chown -R $USER_NAME.$GROUP_NAME /var
+RUN chown -R $USER_NAME.$GROUP_NAME /opt/data-egress
 RUN chmod g+rwX /data-egress
 RUN chmod a+rw /var/log
 RUN chmod 0755 entrypoint.sh
