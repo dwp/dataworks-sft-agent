@@ -106,10 +106,13 @@ if [ -n "${CONFIGURE_SSL}" ]; then
 
   cd $app_dir
   # Add SSl config to SFT
-  sed -i "s/KEY_STORE_PATH/$KEY_STORE_PATH/g" agent-config.yml
-  sed -i "s/KEYSTORE_PASSWORD/$KEYSTORE_PASSWORD/g" agent-config.yml
-  sed -i "s/TRUST_STORE_PATH/$TRUST_STORE_PATH/g" agent-config.yml
-  sed -i "s/TRUST_STORE_PASSWORD/$TRUSTSTORE_PASSWORD/g" agent-config.yml
+  
+  sed -i "s/^\(\s*keyStorePassword\s*:\s*\).*/\1$KEYSTORE_PASSWORD/" agent-config.yml
+  sed -i "s|^\(\s*keyStorePath\s*:\s*\).*|\1$KEY_STORE_PATH|" agent-config.yml
+  sed -i "s|^\(\s*trustStorePath\s*:\s*\).*|\1$TRUST_STORE_PATH|" agent-config.yml
+  sed -i "s/^\(\s*trustStorePassword\s*:\s*\).*/\1$TRUSTSTORE_PASSWORD/" agent-config.yml
+
+  cat agent-config.yml
 
   unset HTTP_PROXY
   unset HTTPS_PROXY
