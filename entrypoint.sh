@@ -116,8 +116,8 @@ if [ -n "${CONFIGURE_SSL}" ]; then
 
   cat agent-config.yml
   echo "INFO: Starting the SFT agent with SSL config..."
-  exec java -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
+  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Djavax.net.debug="${JAVAX_DEBUG}" -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
 else
   echo "INFO: Starting the SFT agent..."
-  exec java -jar sft-agent.jar server agent-config.yml
+  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -jar sft-agent.jar server agent-config.yml
 fi
