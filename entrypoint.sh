@@ -61,7 +61,7 @@ echo "INFO: TEST_DIRECTORY is set to ${TEST_DIRECTORY}"
 if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
   echo "INFO: Creating test files in ${TEST_DIRECTORY}"
   cd /data-egress # mounted volume
-  if [ -d "${TEST_DIRECTORY}" ] 
+  if [ -d "${TEST_DIRECTORY}" ]
   then
       cd "${TEST_DIRECTORY}"
   else
@@ -108,7 +108,7 @@ unset NO_PROXY
 
 if [ -n "${CONFIGURE_SSL}" ]; then
   # Add SSl config to SFT
-  
+
   sed -i "s/^\(\s*keyStorePassword\s*:\s*\).*/\1$KEYSTORE_PASSWORD/" agent-config.yml
   sed -i "s|^\(\s*keyStorePath\s*:\s*\).*|\1$KEY_STORE_PATH|" agent-config.yml
   sed -i "s|^\(\s*trustStorePath\s*:\s*\).*|\1$TRUST_STORE_PATH|" agent-config.yml
