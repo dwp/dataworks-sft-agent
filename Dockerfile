@@ -31,9 +31,7 @@ COPY entrypoint.sh ./
 # Jmx Exporter
 RUN mkdir -p /opt/jmx_exporter
 COPY ./jmx_exporter_config.yml /opt/jmx_exporter/
-RUN curl -L https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_httpserver/${jmx_exporter_version}/jmx_prometheus_httpserver-${jmx_exporter_version}.jar -o /opt/jmx_exporter/jmx_exporter.jar
-
-ENV JAVA_OPTS="-javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml"
+RUN curl -L https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${jmx_exporter_version}/jmx_prometheus_javaagent-${jmx_exporter_version}.jar -o /opt/jmx_exporter/jmx_exporter.jar
 
 # Set user to run the process as in the docker contianer
 ENV USER_NAME=root
