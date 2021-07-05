@@ -21,7 +21,7 @@ above environment variables.
 
 #### Metrics
 This image is started along with [JMX prometheus exporter](https://github.com/prometheus/jmx_exporter)
-By default the JMX exporter is runnig on port 9996 and will be acessible at http://localhost:9996/metrics
+By default the JMX exporter is running on port 9996 and will be accessible at http://localhost:9996/metrics
 
 The metrics exposed are:
 - JVM runtime: information about heap memory usage, thread count, and classes. 
