@@ -1,12 +1,5 @@
 # dataworks-sft-agent
 
-## A repo for the dataworks sft agent docker image
-
-This repo contains Makefile, and Dockerfile to fit the standard pattern. 
-
-After cloning this repo, please run:  
-`make bootstrap`
-
 ### Running the image
 
 #### Environment Variables
@@ -25,3 +18,10 @@ above environment variables.
 
 * agent-config.yml
 * agent-application-config.yml
+
+#### Metrics
+This image is started along with [JMX prometheus exporter](https://github.com/prometheus/jmx_exporter)
+By default the JMX exporter is running on port 9996 and will be accessible at http://localhost:9996/metrics
+
+The metrics exposed are:
+- JVM runtime: information about heap memory usage, thread count, and classes. 
