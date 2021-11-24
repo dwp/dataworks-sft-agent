@@ -114,7 +114,7 @@ if [ -n "${CONFIGURE_SSL}" ]; then
   sed -i "s/^\(\s*trustStorePassword\s*:\s*\).*/\1$TRUSTSTORE_PASSWORD/" agent-config.yml
 
   echo "INFO: Starting the SFT agent with SSL config..."
-  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar sft-agent.jar server agent-config.yml
+  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar -Xmx4g sft-agent.jar server agent-config.yml
 else
   echo "INFO: Starting the SFT agent..."
   exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -jar sft-agent.jar server agent-config.yml
