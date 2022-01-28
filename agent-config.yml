@@ -6,11 +6,11 @@ httpClient:
 logging:
   appenders:
     - type: console
-      threshold: DEBUG
+      threshold: INFO
       target: stdout
       logFormat: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%30.30t] %-30.30c{1} %mdc{} %-5p %m%n"
     - type: file
-      threshold: DEBUG
+      threshold: INFO
       logFormat: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%30.30t] %-30.30c{1} %mdc{} %-5p %m%n"
       currentLogFilename: /var/log/sft/sft-agent.log
       archivedLogFilenamePattern: /var/log/sft-agent-%d.log.gz
