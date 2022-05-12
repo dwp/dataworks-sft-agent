@@ -26,12 +26,12 @@ WORKDIR /app
 # Data volume
 VOLUME [ "/data-egress" ]
 
-COPY ../sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
-COPY entrypoint.sh ./
+COPY files/sft-agent-jre8-2.3.1a4ce31c2971dc408da388c33f4228e73ecbaa2548b5a9cbf6528d6657210d71c.jar sft-agent.jar
+COPY sft-agent/entrypoint.sh ./
 
 # Jmx Exporter
 RUN mkdir -p /opt/jmx_exporter
-COPY ../jmx_exporter_config.yml /opt/jmx_exporter/
+COPY files/jmx_exporter_config.yml /opt/jmx_exporter/
 RUN curl -L https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/${jmx_exporter_version}/jmx_prometheus_javaagent-${jmx_exporter_version}.jar -o /opt/jmx_exporter/jmx_exporter.jar
 
 # Set user to run the process as in the docker contianer

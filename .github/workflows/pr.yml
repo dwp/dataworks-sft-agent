@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker image
-        run: docker build -t dwpdigital/${{ matrix.image }}:latest ./${{ matrix.image }}/
+        run: docker build -t dwpdigital/${{ matrix.image }}:latest -f ${{ matrix.image }}/Dockerfile .
       - name: Run Snyk to check image for high vulnerabilities
         uses: snyk/actions/docker@master
         env:
