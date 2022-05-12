@@ -73,21 +73,21 @@ aws ${PROFILE_OPTION} s3 cp ${S3_URI}/agent-application-config.yml agent-applica
 
 app_dir=$(pwd)
 
-#echo "INFO: CREATE_TEST_FILES is set to ${CREATE_TEST_FILES}"
-#echo "INFO: TEST_DIRECTORY is set to ${TEST_DIRECTORY}"
-#if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
-#  echo "INFO: Creating test files in ${TEST_DIRECTORY}"
-#  cd /mnt/tmp # mounted volume
-#  if [ -d "${TEST_DIRECTORY}" ]
-#  then
-#      cd "${TEST_DIRECTORY}"
-#  else
-#      mkdir "${TEST_DIRECTORY}"
-#      cd "${TEST_DIRECTORY}"
-#  fi
-#  echo "test 1" >> test1.txt
-#  echo "test 2" >> test2.txt
-#fi
+echo "INFO: CREATE_TEST_FILES is set to ${CREATE_TEST_FILES}"
+echo "INFO: TEST_DIRECTORY is set to ${TEST_DIRECTORY}"
+if [ -n "${CREATE_TEST_FILES}" ] && [ -n "${TEST_DIRECTORY}" ]; then
+  echo "INFO: Creating test files in ${TEST_DIRECTORY}"
+  cd /mnt/tmp # mounted volume
+  if [ -d "${TEST_DIRECTORY}" ]
+  then
+      cd "${TEST_DIRECTORY}"
+  else
+      mkdir "${TEST_DIRECTORY}"
+      cd "${TEST_DIRECTORY}"
+  fi
+  echo "test 1" >> test1.txt
+  echo "test 2" >> test2.txt
+fi
 
 # Retrieve certificates
 TRUSTSTORE_PASSWORD=$(uuidgen -r)
