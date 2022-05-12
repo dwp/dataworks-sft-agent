@@ -16,6 +16,23 @@ resources:
       repository: "dataworks-sft-agent"
       aws_role_arn: arn:aws:iam::((aws_account.management)):role/ci
 
+  - name: dwpdigital-dataworks-sft-agent-ingress
+    type: registry-image-resource
+    source:
+      repository: dwpdigital/dataworks-sft-agent-ingress
+    check_every: 5m
+
+  - name: ecr-dwpdigital-dataworks-sft-agent-ingress-dev
+    .: (( inject meta.resources.ecr-resource ))
+    source:
+      repository: "dataworks-sft-agent-ingress"
+
+  - name: ecr-dwpdigital-dataworks-sft-agent-ingress
+    .: (( inject meta.resources.ecr-resource ))
+    source:
+      repository: "dataworks-sft-agent-ingress"
+      aws_role_arn: arn:aws:iam::((aws_account.management)):role/ci
+
 jobs:
   - name: mirror-dwpdigital-dataworks-sft-agent-dev
     serial_groups: [dataworks-sft-agent]
@@ -41,4 +58,30 @@ jobs:
       - put: ecr-dwpdigital-dataworks-sft-agent
         params:
           image: "dwpdigital-dataworks-sft-agent/image.tar"
+        attempts: 3
+
+  - name: mirror-dwpdigital-dataworks-sft-agent-ingress-dev
+    serial_groups: [dataworks-sft-agent-ingress]
+    plan:
+      - get: dwpdigital-dataworks-sft-agent-ingress
+        trigger: true
+        params:
+          format: oci
+        attempts: 3
+      - put: ecr-dwpdigital-dataworks-sft-agent-ingress-dev
+        params:
+          image: "dwpdigital-dataworks-sft-agent-ingress/image.tar"
+        attempts: 3
+
+  - name: mirror-dwpdigital-dataworks-sft-agent-ingress
+    serial_groups: [dataworks-sft-agent-ingress]
+    plan:
+      - get: dwpdigital-dataworks-sft-agent-ingress
+        trigger: true
+        params:
+          format: oci
+        attempts: 3
+      - put: ecr-dwpdigital-dataworks-sft-agent-ingress
+        params:
+          image: "dwpdigital-dataworks-sft-agent-ingress/image.tar"
         attempts: 3

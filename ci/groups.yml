@@ -10,3 +10,5 @@ groups:
     jobs:
       - mirror-dwpdigital-dataworks-sft-agent-dev
       - mirror-dwpdigital-dataworks-sft-agent
+      - mirror-dwpdigital-dataworks-sft-agent-ingress-dev
+      - mirror-dwpdigital-dataworks-sft-agent-ingress
