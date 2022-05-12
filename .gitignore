@@ -6,7 +6,9 @@
 **/*.tfstate*
 
 terraform.tf
+terraform.tfvars
 aviator_pipeline.yml
+.terraform.lock.hcl
 
 # Unit test / coverage reports
 htmlcov/

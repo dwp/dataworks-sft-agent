@@ -19,8 +19,8 @@ output "ecr_example_url" {
 resource "aws_ecr_repository" "dataworks-sft-agent-ingress" {
   name = "dataworks-sft-agent-ingress"
   tags = merge(
-  local.common_tags,
-  { DockerHub : "dwpdigital/dataworks-sft-agent-ingress" }
+    local.common_tags,
+    { DockerHub : "dwpdigital/dataworks-sft-agent-ingress" }
   )
 }
 
