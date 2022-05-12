@@ -1,4 +1,5 @@
-FROM python:3.8.10-alpine3.13 AS builder
+FROM alpine:3.12.1 AS builder
+
 ## Replace with your s3 bucket name
 
 # Tagging to master to fix cache issue in 1.86 as 1.87 not buildable.
@@ -14,7 +15,7 @@ RUN cd s3fs-fuse && \
     make && \
     make install
 
-FROM python:3.8.10-alpine3.13
+FROM alpine:3.12.1
 
 ENV USER=root
 ENV acm_cert_helper_version="0.37.0"
@@ -35,6 +36,7 @@ RUN echo "===> Installing Dependencies ..." \
     && apk add --no-cache ca-certificates \
     && apk add --no-cache util-linux \
     && apk add --no-cache curl \
+    && apk add --no-cache python3 py3-pip python3-dev \
     && apk add --no-cache openjdk8-jre \
     && apk add --no-cache aws-cli \
     && echo "===> Installing acm_pca_cert_generator ..." \
@@ -67,7 +69,7 @@ RUN chown -R $USER_NAME.$GROUP_NAME /var
 RUN chown -R $USER_NAME.$GROUP_NAME /opt/data-ingress
 RUN chmod g+rwX /data-ingress
 RUN chmod a+rw /var/log
-RUN chmod 0755 entrypoint.sh
+RUN chmod +x entrypoint.sh
 USER $USER_NAME
 
 EXPOSE 8080

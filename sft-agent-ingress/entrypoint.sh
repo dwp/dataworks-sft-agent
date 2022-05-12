@@ -1,29 +1,34 @@
 #!/bin/sh
 set -e
 
-export HTTP_PROXY="http://${internet_proxy}:3128"
-export HTTPS_PROXY="$HTTP_PROXY"
-export NO_PROXY="${non_proxied_endpoints},${dks_fqdn}"
+fusermount -u /mnt/tmp
 
-/opt/s3fs-fuse/bin/s3fs ${STAGE_BUCKET_ID} /mnt/tmp \
+nohup /opt/s3fs-fuse/bin/s3fs ${STAGE_BUCKET_ID} /mnt/tmp \
     -o ecs \
     -o endpoint=eu-west-2 \
     -o url=https://s3.amazonaws.com \
     -o use_sse=kmsid:${KMS_KEY_ARN} \
-    -o nonempty
+    -o nonempty \
+    -o allow_other
 
-sleep 3
+sleep 5
+
+echo "listing mounted volume"
 
 ls /mnt/tmp
 
+export HTTP_PROXY="http://${internet_proxy}:3128"
+export HTTPS_PROXY="$HTTP_PROXY"
+export NO_PROXY="${non_proxied_endpoints},${dks_fqdn}"
+
 
 echo "INFO: Checking container configuration..."
-if [ -z "${SFT_AGENT_CONFIG_S3_BUCKET}" -o -z "${SFT_AGENT_CONFIG_S3_PREFIX}" ]; then
-  echo "ERROR: SFT_AGENT_CONFIG_S3_BUCKET and SFT_AGENT_CONFIG_S3_PREFIX environment variables must be provided"
+if [ -z "${SFT_AGENT_INGRESS_CONFIG_S3_BUCKET}" -o -z "${SFT_AGENT_INGRESS_CONFIG_S3_PREFIX}" ]; then
+  echo "ERROR: SFT_AGENT_INGRESS_CONFIG_S3_BUCKET and SFT_AGENT_INGRESS_CONFIG_S3_PREFIX environment variables must be provided"
   exit 1
 fi
 
-S3_URI="s3://${SFT_AGENT_CONFIG_S3_BUCKET}/${SFT_AGENT_CONFIG_S3_PREFIX}"
+S3_URI="s3://${SFT_AGENT_INGRESS_CONFIG_S3_BUCKET}/${SFT_AGENT_INGRESS_CONFIG_S3_PREFIX}"
 
 # If either of the AWS credentials variables were provided, validate them
 if [ -n "${AWS_ACCESS_KEY_ID}${AWS_SECRET_ACCESS_KEY}" ]; then
