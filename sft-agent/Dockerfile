@@ -7,6 +7,7 @@ RUN echo "===> Installing Dependencies ..." \
     && apk update \
     && apk upgrade \
     && echo "==Update done==" \
+    && apk add --no-cache ca-certificates \
     && apk add --no-cache util-linux \
     && apk add --no-cache curl \
     && apk add --no-cache openjdk8-jre \
