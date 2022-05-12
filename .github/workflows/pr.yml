@@ -6,20 +6,19 @@ on:
       - 'ci/**'
       - '**/*.md'
 
-env:
-  IMAGE_NAME: dwpdigital/sft-agent
-
 jobs:
   docker-build-and-scan:
     runs-on: ubuntu-latest
+    matrix:
+      image: [sft-agent, sft-agent-ingress]
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker image
-        run: docker build -t ${{ env.IMAGE_NAME }}:latest .
+        run: docker build -t dwpdigital/${{ matrix.image }}:latest ./${{ matrix.image }}/
       - name: Run Snyk to check image for high vulnerabilities
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ${{ env.IMAGE_NAME }}
-          args: --file=Dockerfile --policy-path=./.snyk --severity-threshold=high --exclude-base-image-vulns --org=dwp-dataworks
+          image: dwpdigital/${{ matrix.image }}
+          args: --file=${{ matrix.image }}/Dockerfile --policy-path=./.snyk --severity-threshold=high --exclude-base-image-vulns --org=dwp-dataworks
