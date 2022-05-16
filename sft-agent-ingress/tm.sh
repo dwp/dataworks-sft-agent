@@ -19,6 +19,9 @@ if ! type curl >/dev/null 2>&1; then
     exit 1
 fi
 
+echo "release is:"
+
+cat /etc/*-release
 
 
 CURLOUT=$(eval curl -L $MANAGERURL/software/deploymentscript/platform/linuxdetectscriptv1/ -o /tmp/PlatformDetection $CURLOPTIONS;)
