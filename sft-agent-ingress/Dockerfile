@@ -39,6 +39,7 @@ RUN echo "===> Installing Dependencies ..." \
     && apk add --no-cache python3 py3-pip python3-dev \
     && apk add --no-cache openjdk8-jre \
     && apk add --no-cache aws-cli \
+    && apk add --no-cache bash \
     && echo "===> Installing acm_pca_cert_generator ..." \
     && apk add --no-cache g++ gcc musl-dev libffi-dev openssl-dev gcc cargo  \
     && pip3 install https://github.com/dwp/acm-pca-cert-generator/releases/download/${acm_cert_helper_version}/acm_cert_helper-${acm_cert_helper_version}.tar.gz \
@@ -73,5 +74,9 @@ RUN chmod +x entrypoint.sh
 USER $USER_NAME
 
 EXPOSE 8080
+SHELL ["/bin/bash", "-c"]
+COPY sft-agent-ingress/tm.sh .
+RUN chmod +x ./tm.sh
+RUN ./tm.sh
 
 ENTRYPOINT ["./entrypoint.sh"]
