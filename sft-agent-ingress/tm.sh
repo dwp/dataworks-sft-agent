@@ -18,6 +18,11 @@ if ! type curl >/dev/null 2>&1; then
     logger -t Please install CURL before running this script
     exit 1
 fi
+
+
+cat /tmp/PlatformDetection
+ls /tmp/PlatformDetection
+
 CURLOUT=$(eval curl -L $MANAGERURL/software/deploymentscript/platform/linuxdetectscriptv1/ -o /tmp/PlatformDetection $CURLOPTIONS;)
 err=$?
 if [[ $err -eq 60 ]]; then
