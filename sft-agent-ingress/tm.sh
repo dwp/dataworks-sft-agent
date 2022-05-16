@@ -1,4 +1,8 @@
 #!/bin/bash
+
+echo "installing trendmicro"
+
+
 ACTIVATIONURL='dsm://agents.deepsecurity.trendmicro.com:443/'
 MANAGERURL='https://app.deepsecurity.trendmicro.com:443'
 CURLOPTIONS='--silent --tlsv1.2'
