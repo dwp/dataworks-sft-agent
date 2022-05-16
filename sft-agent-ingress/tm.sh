@@ -20,8 +20,6 @@ if ! type curl >/dev/null 2>&1; then
 fi
 
 
-cat /tmp/PlatformDetection
-ls /tmp/PlatformDetection
 
 CURLOUT=$(eval curl -L $MANAGERURL/software/deploymentscript/platform/linuxdetectscriptv1/ -o /tmp/PlatformDetection $CURLOPTIONS;)
 err=$?
@@ -30,6 +28,11 @@ if [[ $err -eq 60 ]]; then
     logger -t TLS certificate validation for the agent package download has failed. Please check that your Workload Security Manager TLS certificate is signed by a trusted root certificate authority. For more information, search for \"deployment scripts\" in the Deep Security Help Center.
     exit 1;
 fi
+
+
+cat /tmp/PlatformDetection
+ls /tmp/PlatformDetection
+
 if [ -s /tmp/PlatformDetection ]; then
     . /tmp/PlatformDetection
 else
