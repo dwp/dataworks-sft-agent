@@ -9,8 +9,9 @@ on:
 jobs:
   docker-build-and-scan:
     runs-on: ubuntu-latest
-    matrix:
-      image: [sft-agent, sft-agent-ingress]
+    strategy:
+      matrix:
+        image: [sft-agent, sft-agent-ingress]
     steps:
       - uses: actions/checkout@v2
       - name: Build Docker image
