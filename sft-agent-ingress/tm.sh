@@ -59,3 +59,6 @@ if [[ ${rc} != 0 ]]; then
 fi
 echo Install the agent package successfully
 sleep 15
+/opt/ds_agent/dsa_control -r
+/opt/ds_agent/dsa_control -a $ACTIVATIONURL "tenantID:B12348FB-25C8-B1BF-E3CE-5C058BEDCAB6" "token:18090598-02D7-8DC8-126E-9E0E99A2F680" "policyid:69"
+# /opt/ds_agent/dsa_control -a dsm://agents.deepsecurity.trendmicro.com:443/ "tenantID:B12348FB-25C8-B1BF-E3CE-5C058BEDCAB6" "token:18090598-02D7-8DC8-126E-9E0E99A2F680" "policyid:69"
