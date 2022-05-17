@@ -75,26 +75,8 @@ USER $USER_NAME
 
 EXPOSE 8080
 
-FROM ubuntu:20.04
-
-COPY --from=secbuilder /opt/s3fs-fuse /opt/s3fs-fuse
-COPY --from=secbuilder /etc/ssl/ /etc/ssl/
-COPY --from=secbuilder /usr/local/share/ca-certificates/ /usr/local/share/ca-certificates/
-COPY --from=secbuilder /app /app
-COPY --from=secbuilder /var /var
-COPY --from=secbuilder /data-ingress /data-ingress
-COPY --from=secbuilder /opt/data-ingress /opt/data-ingress
-COPY --from=secbuilder /var/log /var/log
 COPY sft-agent-ingress/entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh
-
-RUN chown -R $USER_NAME.$GROUP_NAME /etc/ssl/
-RUN chown -R $USER_NAME.$GROUP_NAME /usr/local/share/ca-certificates/
-RUN chown -R $USER_NAME.$GROUP_NAME /app
-RUN chown -R $USER_NAME.$GROUP_NAME /var
-RUN chown -R $USER_NAME.$GROUP_NAME /opt/data-ingress
-RUN chmod g+rwX /data-ingress
-RUN chmod a+rw /var/log
 RUN chmod +x entrypoint.sh
 RUN apt-get update \
 && apt-get -y install curl
