@@ -67,3 +67,4 @@ if [[ ${rc} != 0 ]]; then
 fi
 
 echo Install the agent package successfully
+

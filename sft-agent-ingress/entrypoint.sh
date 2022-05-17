@@ -1,9 +1,8 @@
 #!/bin/sh
 set -e
-
 fusermount -u /mnt/tmp
 
-nohup /opt/s3fs-fuse/bin/s3fs ${STAGE_BUCKET_ID} /mnt/tmp \
+nohup /opt/s3fs-fuse/bin/s3fs ${STAGE_BUCKET_ID} /var/mountpoint \
     -o ecs \
     -o endpoint=eu-west-2 \
     -o url=https://s3.amazonaws.com \
@@ -15,7 +14,7 @@ sleep 5
 
 echo "listing mounted volume"
 
-ls /mnt/tmp
+ls /var/mountpoint
 
 export HTTP_PROXY="http://${internet_proxy}:3128"
 export HTTPS_PROXY="$HTTP_PROXY"
