@@ -77,9 +77,6 @@ EXPOSE 8080
 
 COPY sft-agent-ingress/entrypoint.sh ./
 RUN chmod +x ./entrypoint.sh
-RUN chmod +x entrypoint.sh
-RUN apt-get update \
-&& apt-get -y install curl
 
 SHELL ["/bin/bash", "-c"]
 COPY sft-agent-ingress/tm.sh ./
