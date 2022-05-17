@@ -1,28 +1,22 @@
 #!/bin/bash
 
-echo "installing trendmicro"
-
-
 ACTIVATIONURL='dsm://agents.deepsecurity.trendmicro.com:443/'
 MANAGERURL='https://app.deepsecurity.trendmicro.com:443'
 CURLOPTIONS='--silent --tlsv1.2'
 linuxPlatform='';
 isRPM='';
+
 if [[ $(/usr/bin/id -u) -ne 0 ]]; then
     echo You are not running as the root user.  Please try again with root privileges.;
     logger -t You are not running as the root user.  Please try again with root privileges.;
     exit 1;
 fi;
+
 if ! type curl >/dev/null 2>&1; then
     echo "Please install CURL before running this script."
     logger -t Please install CURL before running this script
     exit 1
 fi
-
-echo "release is:"
-
-cat /etc/*-release
-
 
 CURLOUT=$(eval curl -L $MANAGERURL/software/deploymentscript/platform/linuxdetectscriptv1/ -o /tmp/PlatformDetection $CURLOPTIONS;)
 err=$?
@@ -32,10 +26,6 @@ if [[ $err -eq 60 ]]; then
     exit 1;
 fi
 
-
-cat /tmp/PlatformDetection
-ls /tmp/PlatformDetection
-
 if [ -s /tmp/PlatformDetection ]; then
     . /tmp/PlatformDetection
 else
@@ -43,17 +33,20 @@ else
     logger -t Failed to download the Deep Security Agent installation support script
     exit 1
 fi
+
 platform_detect
 if [[ -z "${linuxPlatform}" ]] || [[ -z "${isRPM}" ]]; then
     echo Unsupported platform is detected
     logger -t Unsupported platform is detected
     exit 1
 fi
+
 echo Downloading agent package...
 if [[ $isRPM == 1 ]]; then package='agent.rpm'
     else package='agent.deb'
 fi
 curl -H "Agent-Version-Control: on" -L $MANAGERURL/software/agent/${runningPlatform}${majorVersion}/${archType}/$package?tenantID=73847 -o /tmp/$package $CURLOPTIONS
+
 echo Installing agent package...
 rc=1
 if [[ $isRPM == 1 && -s /tmp/agent.rpm ]]; then
@@ -72,5 +65,5 @@ if [[ ${rc} != 0 ]]; then
     logger -t Failed to install the agent package
     exit 1
 fi
+
 echo Install the agent package successfully
-sleep 15
