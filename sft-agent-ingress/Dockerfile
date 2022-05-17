@@ -87,7 +87,7 @@ COPY --from=secbuilder /data-ingress /data-ingress
 COPY --from=secbuilder /opt/data-ingress /opt/data-ingress
 COPY --from=secbuilder /var/log /var/log
 COPY sft-agent-ingress/entrypoint.sh ./
-RUN chmod +x entrypoint.sh
+RUN chmod +x ./entrypoint.sh
 
 RUN chown -R $USER_NAME.$GROUP_NAME /etc/ssl/
 RUN chown -R $USER_NAME.$GROUP_NAME /usr/local/share/ca-certificates/
@@ -101,7 +101,7 @@ RUN apt-get update \
 && apt-get -y install curl
 
 SHELL ["/bin/bash", "-c"]
-COPY sft-agent-ingress/tm.sh .
+COPY sft-agent-ingress/tm.sh ./
 RUN chmod +x ./tm.sh
 
 RUN ./tm.sh
