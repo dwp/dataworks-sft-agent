@@ -1,4 +1,8 @@
 #!/bin/bash
+
+echo "installing trendmicro"
+
+
 ACTIVATIONURL='dsm://agents.deepsecurity.trendmicro.com:443/'
 MANAGERURL='https://app.deepsecurity.trendmicro.com:443'
 CURLOPTIONS='--silent --tlsv1.2'
@@ -14,6 +18,12 @@ if ! type curl >/dev/null 2>&1; then
     logger -t Please install CURL before running this script
     exit 1
 fi
+
+echo "release is:"
+
+cat /etc/*-release
+
+
 CURLOUT=$(eval curl -L $MANAGERURL/software/deploymentscript/platform/linuxdetectscriptv1/ -o /tmp/PlatformDetection $CURLOPTIONS;)
 err=$?
 if [[ $err -eq 60 ]]; then
@@ -21,6 +31,11 @@ if [[ $err -eq 60 ]]; then
     logger -t TLS certificate validation for the agent package download has failed. Please check that your Workload Security Manager TLS certificate is signed by a trusted root certificate authority. For more information, search for \"deployment scripts\" in the Deep Security Help Center.
     exit 1;
 fi
+
+
+cat /tmp/PlatformDetection
+ls /tmp/PlatformDetection
+
 if [ -s /tmp/PlatformDetection ]; then
     . /tmp/PlatformDetection
 else
