@@ -28,7 +28,7 @@ The metrics exposed are:
 
 #### Updating the agent
 
-Contact Mark Whyte to obtain the sft jar. To do this you will need to get access to engineering practise confluence.
+Contact Mark Whyte to obtain the sft jar. To do this you will need to get access to DWP confluence.
 Go to personal space and create a page there. Share with Mark and he'll upload the jar for you. Chuck it into 
 git and make the changes to code in line with previous PRs (43 is one).
 
