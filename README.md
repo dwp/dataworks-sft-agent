@@ -25,3 +25,12 @@ By default the JMX exporter is running on port 9996 and will be accessible at ht
 
 The metrics exposed are:
 - JVM runtime: information about heap memory usage, thread count, and classes. 
+
+#### Updating the agent
+
+Contact Mark Whyte to obtain the sft jar. To do this you will need to get access to engineering practise confluence.
+Go to personal space and create a page there. Share with Mark and he'll upload the jar for you. Chuck it into 
+git and make the changes to code in line with previous PRs (43 is one).
+
+SFT docs are here https://dwpdigital.atlassian.net/wiki/spaces/SFT/pages/113836037260/SFT+Agent+Documentation
+
