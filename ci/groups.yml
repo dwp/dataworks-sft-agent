@@ -2,7 +2,7 @@ groups:
   - name: master
     jobs:
       - management-dev
-      - management
+      # - management
   - name: pull-request
     jobs:
       - dataworks-sft-agent-pr
