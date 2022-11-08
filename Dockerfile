@@ -1,4 +1,4 @@
-FROM python:3.8.10-alpine3.13
+FROM python:3.8.10-alpine3.14
 
 ENV acm_cert_helper_version="0.37.0"
 ARG jmx_exporter_version="0.15.0"
@@ -26,7 +26,7 @@ WORKDIR /app
 # Data volume
 VOLUME [ "/data-egress" ]
 
-COPY sft-agent-jre8-2.5.3 sft-agent.jar
+COPY sft-agent-jre8-2.5.3.jar sft-agent.jar
 COPY entrypoint.sh ./
 
 # Jmx Exporter
