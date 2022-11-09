@@ -10,7 +10,7 @@ RUN echo "===> Installing Dependencies ..." \
     && apk add --no-cache ca-certificates \
     && apk add --no-cache util-linux \
     && apk add --no-cache curl \
-    && apk add --no-cache openjdk8-jre \
+    && apk add --no-cache openjdk11-jre \
     && apk add --no-cache aws-cli \
     && echo "===> Installing acm_pca_cert_generator ..." \
     && apk add --no-cache g++ gcc musl-dev libffi-dev openssl-dev gcc cargo  \
@@ -26,7 +26,7 @@ WORKDIR /app
 # Data volume
 VOLUME [ "/data-egress" ]
 
-COPY sft-agent-jre8-2.5.3.jar sft-agent.jar
+COPY sft-afent-3.0.3-JRE11.jar sft-agent.jar
 COPY entrypoint.sh ./
 
 # Jmx Exporter
