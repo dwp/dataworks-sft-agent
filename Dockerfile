@@ -26,7 +26,7 @@ WORKDIR /app
 # Data volume
 VOLUME [ "/data-egress" ]
 
-COPY sft-afent-3.0.3-JRE11.jar sft-agent.jar
+COPY sft-agent-3.0.3-JRE11.jar sft-agent.jar
 COPY entrypoint.sh ./
 
 # Jmx Exporter
