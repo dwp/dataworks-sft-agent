@@ -97,7 +97,7 @@ acm-cert-retriever \
 CERT1=/usr/local/share/ca-certificates/sdx1.crt
 CERT1ALIAS="awssfthub1"
 if [ -f "$CERT1" ]; then
-    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERTALIAS"
+    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT1ALIAS"
     echo "$CERT1 imported into keystore."
 else 
     echo "$CERT1 does not exist."
