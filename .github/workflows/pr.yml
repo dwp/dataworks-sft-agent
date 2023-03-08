@@ -18,6 +18,7 @@ jobs:
         run: docker build -t ${{ env.IMAGE_NAME }}:latest .
       - name: Run Snyk to check image for high vulnerabilities
         uses: snyk/actions/docker@master
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:

@@ -1,7 +1,7 @@
-FROM python:3.8.10-alpine3.14
+FROM python:3.8.16-alpine3.17
 
-ENV acm_cert_helper_version="0.37.0"
-ARG jmx_exporter_version="0.15.0"
+ENV acm_cert_helper_version="0.41.0"
+ARG jmx_exporter_version="0.18.0"
 RUN echo "===> Installing Dependencies ..." \
     && echo "===> Updating base packages ..." \
     && apk update \
@@ -26,7 +26,9 @@ WORKDIR /app
 # Data volume
 VOLUME [ "/data-egress" ]
 
-COPY sft-agent-3.0.3-JRE11.jar sft-agent.jar
+
+COPY sft-agent-3.0.5-JRE11.jar sft-agent.jar
+
 COPY entrypoint.sh ./
 
 # Jmx Exporter
