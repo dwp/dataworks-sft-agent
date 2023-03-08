@@ -93,6 +93,25 @@ acm-cert-retriever \
 --truststore-aliases "${truststore_aliases}" \
 --truststore-certs "${truststore_certs}"
 
+
+CERT1=/usr/local/share/ca-certificates/sdx1.crt
+CERT1ALIAS="awssfthub1"
+if [ -f "$CERT1" ]; then
+    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERTALIAS"
+    echo "$CERT1 imported into keystore."
+else 
+    echo "$CERT1 does not exist."
+fi
+
+CERT2=/usr/local/share/ca-certificates/sdx2.crt
+CERT2ALIAS="sdx2"
+if [ -f "$CERT2" ]; then
+    keytool -importcert -file "$CERT2" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT2ALIAS"
+    echo "$CERT2 imported into keystore."
+else 
+    echo "$CERT2 does not exist."
+fi
+
 cd /usr/local/share/ca-certificates/
 touch data_egress_sft_ca.pem
 
@@ -114,7 +133,7 @@ if [ -n "${CONFIGURE_SSL}" ]; then
   sed -i "s/^\(\s*trustStorePassword\s*:\s*\).*/\1$TRUSTSTORE_PASSWORD/" agent-config.yml
 
   echo "INFO: Starting the SFT agent with SSL config..."
-  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -Djavax.net.ssl.keyStore="$KEY_STORE_PATH" -Djavax.net.ssl.keyStorePassword="${KEYSTORE_PASSWORD}" -Djavax.net.ssl.trustStore="$TRUST_STORE_PATH" -Djavax.net.ssl.trustStorePassword="${TRUSTSTORE_PASSWORD}" -Djavax.net.ssl.keyAlias="${private_key_alias}" -jar -Xmx12g sft-agent.jar server agent-config.yml
+  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -jar -Xmx12g sft-agent.jar server agent-config.yml
 else
   echo "INFO: Starting the SFT agent..."
   exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -jar sft-agent.jar server agent-config.yml
