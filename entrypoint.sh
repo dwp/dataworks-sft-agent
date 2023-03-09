@@ -94,6 +94,11 @@ acm-cert-retriever \
 --truststore-certs "${truststore_certs}"
 
 
+KEYSTORE_ALIASES="${keystore_aliases}"
+for F in $(echo $keySTORE_ALIASES | sed "s/,/ /g"); do
+(cat "$F.crt"; echo) >> aws_sft_hub_signed.crt;
+done
+
 CERT1=/usr/local/share/ca-certificates/aws_sft_hub_signed.crt
 CERT1ALIAS="awssfthub1"
 if [ -f "$CERT1" ]; then
