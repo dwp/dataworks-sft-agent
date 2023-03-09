@@ -95,7 +95,7 @@ acm-cert-retriever \
 
 
 KEYSTORE_ALIASES="${keystore_aliases}"
-for F in $(echo $keySTORE_ALIASES | sed "s/,/ /g"); do
+for F in $(echo $KEYSTORE_ALIASES | sed "s/,/ /g"); do
 (cat "$F.crt"; echo) >> aws_sft_hub_signed.crt;
 done
 
