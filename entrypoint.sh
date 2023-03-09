@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set +e
 
 export HTTP_PROXY="http://${internet_proxy}:3128"
 export HTTPS_PROXY="$HTTP_PROXY"
