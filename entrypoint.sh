@@ -93,23 +93,21 @@ acm-cert-retriever \
 --truststore-aliases "${truststore_aliases}" \
 --truststore-certs "${truststore_certs}"
 
+cd /usr/local/share/ca-certificates/
+touch aws_sft_hub_signed.crt
 
-CERT1=/usr/local/share/ca-certificates/sdx1.crt
+KEYSTORE_ALIASES="${keystore_aliases}"
+for F in $(echo $KEYSTORE_ALIASES | sed "s/,/ /g"); do
+(cat "$F.crt"; echo) >> aws_sft_hub_signed.crt;
+done
+
+CERT1=/usr/local/share/ca-certificates/aws_sft_hub_signed.crt
 CERT1ALIAS="awssfthub1"
 if [ -f "$CERT1" ]; then
-    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERTALIAS"
+    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT1ALIAS"
     echo "$CERT1 imported into keystore."
 else 
     echo "$CERT1 does not exist."
-fi
-
-CERT2=/usr/local/share/ca-certificates/sdx2.crt
-CERT2ALIAS="sdx2"
-if [ -f "$CERT2" ]; then
-    keytool -importcert -file "$CERT2" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT2ALIAS"
-    echo "$CERT2 imported into keystore."
-else 
-    echo "$CERT2 does not exist."
 fi
 
 cd /usr/local/share/ca-certificates/
