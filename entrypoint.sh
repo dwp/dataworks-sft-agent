@@ -93,18 +93,13 @@ acm-cert-retriever \
 --truststore-aliases "${truststore_aliases}" \
 --truststore-certs "${truststore_certs}"
 
-cd /usr/local/share/ca-certificates/
-touch aws_sft_hub_signed.crt
-
-KEYSTORE_ALIASES="${keystore_aliases}"
-for F in $(echo $KEYSTORE_ALIASES | sed "s/,/ /g"); do
-(cat "$F.crt"; echo) >> aws_sft_hub_signed.crt;
-done
+echo "INFO: Copying signed certs for import into keystore"
+aws s3 cp ${keystore_certs} /usr/local/share/ca-certificates/
 
 CERT1=/usr/local/share/ca-certificates/aws_sft_hub_signed.crt
 CERT1ALIAS="awssfthub1"
 if [ -f "$CERT1" ]; then
-    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT1ALIAS"
+    keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT1ALIAS" -noprompt
     echo "$CERT1 imported into keystore."
 else 
     echo "$CERT1 does not exist."
