@@ -126,7 +126,7 @@ if [ -n "${CONFIGURE_SSL}" ]; then
   sed -i "s/^\(\s*trustStorePassword\s*:\s*\).*/\1$TRUSTSTORE_PASSWORD/" agent-config.yml
 
   echo "INFO: Starting the SFT agent with SSL config..."
-  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -jar -Xmx12g sft-agent.jar server agent-config.yml
+  exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Djavax.net.debug=all -Dsun.net.client.defaultConnectTimeout=600000 -jar -Xmx12g sft-agent.jar server agent-config.yml
 else
   echo "INFO: Starting the SFT agent..."
   exec java -javaagent:/opt/jmx_exporter/jmx_exporter.jar=9996:/opt/jmx_exporter/jmx_exporter_config.yml -Dsun.net.client.defaultConnectTimeout=600000 -jar sft-agent.jar server agent-config.yml
