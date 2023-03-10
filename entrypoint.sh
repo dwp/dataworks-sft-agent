@@ -97,7 +97,7 @@ echo "INFO: Copying signed certs for import into keystore"
 aws s3 cp ${keystore_certs} /usr/local/share/ca-certificates/
 
 CERT1=/usr/local/share/ca-certificates/aws_sft_hub_signed.crt
-CERT1ALIAS="awssfthub1"
+CERT1ALIAS="${private_key_alias}"
 if [ -f "$CERT1" ]; then
     keytool -importcert -file "$CERT1" -keystore "$KEY_STORE_PATH" -storepass "$KEYSTORE_PASSWORD" -alias "$CERT1ALIAS" -noprompt
     echo "$CERT1 imported into keystore."
