@@ -1,6 +1,6 @@
 FROM python:3.8.10-alpine3.14
 
-ENV acm_cert_helper_version="0.41.0"
+ENV acm_cert_helper_version="0.37.0"
 ARG jmx_exporter_version="0.18.0"
 RUN echo "===> Installing Dependencies ..." \
     && echo "===> Updating base packages ..." \
